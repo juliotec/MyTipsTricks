@@ -20,8 +20,8 @@ namespace MyTipsTricks
             //MyRefOutIn();
             //MyActionsPrint();
             //MyFirst();
-            MyTuples();
-            //MyForForeach();
+            //MyTuples();
+            //XMyForForeach();
             _ = ReadLine();
         }
 
@@ -34,12 +34,9 @@ namespace MyTipsTricks
 
         public static void MyUsingDisposable()
         {
-           // using var i = new MyUsing();
+            using var i = new MyUsing();
 
-            using (var i = new MyUsing())
-            {
-                WriteLine("Logic using");
-            }
+            WriteLine("Logic using");
         }
 
         public static void MyDestructor()
@@ -55,9 +52,9 @@ namespace MyTipsTricks
 
         public static void MyClassReturns()
         {
-            WriteLine(new MyClassReturn1().Return());
-            WriteLine(new MyClassReturn2().Return());
-            WriteLine(new MyClassReturn3().Return());
+            //WriteLine(new MyClassReturn1().Return());
+           // WriteLine(new MyClassReturn2().Return());
+           // WriteLine(new MyClassReturn3().Return());
             WriteLine(new MyClassReturn4().Return());
             WriteLine(MyClassReturn3.Number);
             WriteLine(MyClassReturn4.Number);
@@ -69,8 +66,8 @@ namespace MyTipsTricks
             
             WriteLine($"Esto es una interpolacion del numero {i}");
             WriteLine(@"Los strings los podemos escribir
-Con muchos parrafos
-Los slash \ se muestran tal cual
+Con muchos parrafos {}
+Los slash \n \r  se muestran tal cual
 Para escribir comillas se escribe dos veces "" """);
             WriteLine($@"
 Interpolacion con @ En esta 
@@ -92,12 +89,12 @@ y las comillas igual "" ""
 
         public static void MyRefOutIn()
         {
-            int i;
+            //int i;
             int j = 0;
             int z = 0;
 
-            MyOutRefIn.ReturnOutRefIn(out i, ref j, in z);
-            //MyOutRefIn.ReturnOutRefIn(out int i, ref j, in z);
+            //MyOutRefIn.ReturnOutRefIn(out i, ref j, in z);
+            MyOutRefIn.ReturnOutRefIn(out int i, ref j, in z);
         }
 
         public static void MyActionsPrint()
@@ -118,11 +115,11 @@ y las comillas igual "" ""
 
         public static void MyFirst()
         {
-            var list = Enumerable.Range(0, 100).ToList();
+            var list = Enumerable.Range(1, 100).ToList();
             var list2 = new MyListInt();
 
-            var i = list2.First();
-            var j = list2.FirstOrDefault();
+            var i = list.First();
+            var j = list.FirstOrDefault();
         }
 
         public static void MyTuples()
@@ -208,7 +205,7 @@ y las comillas igual "" ""
 
     public class Destructor
     {
-        public override string ToString() => GetType().Name;        
+        public override string ToString() => GetType().Name;
         
         ~Destructor() => WriteLine($"The {ToString()} finalizer is executing.");
         //NOTA: lost structs no tienen destructores
@@ -236,9 +233,9 @@ y las comillas igual "" ""
         int Return();
     }
 
-    public class MyClassReturn1 : IReturn
+    public class MyClassReturn1
     {
-        public virtual int Return()
+        protected virtual int Return()
         {
             return 0;
         }
@@ -246,7 +243,7 @@ y las comillas igual "" ""
 
     public class MyClassReturn2 : MyClassReturn1
     {
-        public override int Return()
+        protected override int Return()
         {
             return 1;
         }
@@ -256,7 +253,7 @@ y las comillas igual "" ""
     {
         public static int Number = 1;
 
-        public override int Return()
+        protected override int Return()
         {
             return 3;
         }
