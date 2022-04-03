@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Linq;
 using static System.Console;
+using System.Collections.Generic;
 using MyListInt = System.Collections.Generic.List<int>;
 
 namespace MyTipsTricks
@@ -11,8 +14,14 @@ namespace MyTipsTricks
             //MyUsingStaticAndMore();
             //MyUsingDisposable();
             //MyDestructor();
-            //MyDestructor();
+            //MyStruct();
             //MyClassReturns();
+            //MyStrings();
+            //MyRefOutIn();
+            //MyActionsPrint();
+            //MyFirst();
+            MyTuples();
+            //MyForForeach();
             _ = ReadLine();
         }
 
@@ -60,22 +69,10 @@ namespace MyTipsTricks
             
             WriteLine($"Esto es una interpolacion del numero {i}");
             WriteLine(@"Los strings los podemos escribir
-
 Con muchos parrafos
-Los slash \ que en los
-strings normales hacen
-acciones aqui son ignorados
-y se muestran tal cual
-
-Y la pregunta ¿Si en el
-string normal las comillas
-las escribia asi con el \
-ahora como las escribo?
-
-La respuesta es que las escribes
-dos veces "" "" asi");
+Los slash \ se muestran tal cual
+Para escribir comillas se escribe dos veces "" """);
             WriteLine($@"
-
 Interpolacion con @ En esta 
 es lo mismo que @ solo que
 podemos agregar la interpolacion
@@ -91,6 +88,112 @@ asi:
 
 y las comillas igual "" ""
 ");
+        }
+
+        public static void MyRefOutIn()
+        {
+            int i;
+            int j = 0;
+            int z = 0;
+
+            MyOutRefIn.ReturnOutRefIn(out i, ref j, in z);
+            //MyOutRefIn.ReturnOutRefIn(out int i, ref j, in z);
+        }
+
+        public static void MyActionsPrint()
+        {
+            Action<int> action = (x) =>
+            {
+                WriteLine($"La Primera forma del action tiene el numero {x}");
+            };
+
+            static void action2(int x)
+            {
+                WriteLine($"La Segunda forma del action tiene el numero {x}");
+            }
+
+            MyActions.UseMyActions(action);
+            MyActions.UseMyActions(action2);
+        }
+
+        public static void MyFirst()
+        {
+            var list = Enumerable.Range(0, 100).ToList();
+            var list2 = new MyListInt();
+
+            var i = list2.First();
+            var j = list2.FirstOrDefault();
+        }
+
+        public static void MyTuples()
+        {
+            (double, int, MyListInt) t1 = (4.5, 3, new MyListInt() { 0, 1, 2 });
+
+            WriteLine($" {t1.Item1}, {t1.Item2}, {t1.Item3[2]}");
+        }
+
+        public static void MyForForeach()
+        {
+            const int Size = 1000000;
+            const int Iterations = 5000;
+            var tests = 3;
+            var data = new List<double>();
+            var rng = new Random();
+
+            for (int i = 0; i < Size; i++)
+            {
+                data.Add(rng.NextDouble());
+            }
+
+            var correctSum = data.Sum();
+            Stopwatch sw;
+
+            for (var t = 1; t <= tests; t++)
+            {
+                WriteLine($"Test {t}");
+                sw = Stopwatch.StartNew();
+
+                for (int i = 0; i < Iterations; i++)
+                {
+                    double sum = 0;
+
+                    for (int j = 0; j < data.Count; j++)
+                    {
+                        sum += data[j];
+                    }
+
+                    if (Math.Abs(sum - correctSum) > 0.1)
+                    {
+                        WriteLine("Summation failed");
+
+                        return;
+                    }
+                }
+
+                sw.Stop();
+                WriteLine("For loop: {0}", sw.Elapsed);
+                sw = Stopwatch.StartNew();
+
+                for (int i = 0; i < Iterations; i++)
+                {
+                    double sum = 0;
+
+                    foreach (double d in data)
+                    {
+                        sum += d;
+                    }
+
+                    if (Math.Abs(sum - correctSum) > 0.1)
+                    {
+                        WriteLine("Summation failed");
+
+                        return;
+                    }
+                }
+
+                sw.Stop();
+                WriteLine("Foreach loop: {0}", sw.Elapsed);
+            }
         }
     }
 
@@ -176,4 +279,22 @@ y las comillas igual "" ""
             return 5;
         }
     }*/
+
+    public class MyOutRefIn
+    {
+        public static void ReturnOutRefIn(out int i, ref int j, in int z)
+        {
+            i = 10;
+            j = 10;
+            //z = 10;
+        }
+    }
+
+    public class MyActions
+    {
+        public static void UseMyActions(Action<int> action)
+        {
+            action(10);
+        }
+    }
 }
